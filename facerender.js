@@ -21,7 +21,7 @@ const canvas = document.getElementById("skinHead");
 const ctx = canvas.getContext("2d");
 
 const image = new Image();
-image.src = "img/128x128.png";
+image.src = "Skins/128x128.png";
 
 image.onload = function () {
 //  console.log("Ширина изображения: " + this.width + "px");
