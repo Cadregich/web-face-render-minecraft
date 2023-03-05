@@ -1,2 +1,7 @@
 # MinecraftFaceRender
-A script from a regular minecraft skin file will display its face with the support of the second skin layer and cross-browser compatibility
+A script from a regular minecraft skin file will display its face
+
+# Features
+* Second skin layer support
+* HD Skins support
+* Crossbrowser compatibility
