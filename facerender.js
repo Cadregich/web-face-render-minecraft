@@ -17,75 +17,83 @@ function removeBlurFromCanvas(canvas, ctx) {
     canvas.style.msInterpolationMode = "nearest-neighbor";
 }
 
-const canvas = document.getElementById("skinHead");
-const ctx = canvas.getContext("2d");
+const canvasElements = document.querySelectorAll(".skinHead");
+canvasElements.forEach((canvas) => {
+    const ctx = canvas.getContext("2d");
 
-const image = new Image();
-image.src = "Skins/128x128.png";
+    const image = new Image();
+    image.src = "img/128x128.png";
 
-image.onload = function () {
-//  console.log("Ширина изображения: " + this.width + "px");
-//  console.log("Высота изображения: " + this.height + "px");
-    const skinWidth = this.width;
-    const skinHeight = this.height;
+    image.onload = function () {
+        const skinWidth = this.width;
+        const skinHeight = this.height;
 
-    if ((skinHeight !== 64 && skinHeight !== 128 && skinHeight !== 256 && skinHeight !== 512) ||
-        (skinWidth !== 64 && skinWidth !== 128 && skinWidth !== 256 && skinWidth !== 512)) {
-        console.error('Face Render: Invalid skin size');
-        return;
-    }
+        if ((skinHeight !== 64 && skinHeight !== 128 && skinHeight !== 256 && skinHeight !== 512) ||
+            (skinWidth !== 64 && skinWidth !== 128 && skinWidth !== 256 && skinWidth !== 512)) {
+            console.error('Face Render: Invalid skin size');
+            return;
+        }
 
-    removeBlurFromCanvas(canvas, ctx);
+        removeBlurFromCanvas(canvas, ctx);
 
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
 
-    const imageWidth = canvasWidth - (canvasWidth * (8 / 100));    // To reduce the first layer so that the second is in front
-    const imageHeight = canvasHeight - (canvasHeight * (8 / 100)); // To reduce the first layer so that the second is in front
-    const canvasDX = (canvasWidth - imageWidth) / 2;   // To center the first layer
-    const canvasDY = (canvasHeight - imageHeight) / 2; // To center the first layer
+        if (canvasWidth < 64|| canvasHeight < 64) {
+            console.warn('Face Render: Low canvas size');
+        }
+        
+        if (canvasWidth === canvasHeight) {
+            console.warn('Face Render: The width of the canvas is not equal to its height');
+        }
+        
+        const imageWidth = canvasWidth - (canvasWidth * (8 / 100));    // To reduce the first layer so that the second is in front
+        const imageHeight = canvasHeight - (canvasHeight * (8 / 100)); // To reduce the first layer so that the second is in front
+        const canvasDX = (canvasWidth - imageWidth) / 2;   // To center the first layer
+        const canvasDY = (canvasHeight - imageHeight) / 2; // To center the first layer
 
-    const indentsAndSize = {
-        FirstLayer: 8,
-        SecondLayer: 8,
-        indentXSecondLayer: 40
+        const indentsAndSize = {
+            FirstLayer: 8,
+            SecondLayer: 8,
+            indentXSecondLayer: 40
+        };
+
+        if (skinWidth === 128) {
+            for (let key in indentsAndSize) {
+                indentsAndSize[key] *= 2;
+            }
+        } else if (skinWidth === 256) {
+            for (let key in indentsAndSize) {
+                indentsAndSize[key] *= 4;
+            }
+        } else if (skinWidth === 512) {
+            for (let key in indentsAndSize) {
+                indentsAndSize[key] *= 8;
+            }
+        }
+        // First layer
+        ctx.drawImage(
+            image,
+            indentsAndSize["FirstLayer"],
+            indentsAndSize["FirstLayer"],
+            indentsAndSize["FirstLayer"],
+            indentsAndSize["FirstLayer"],
+            canvasDX,
+            canvasDY,
+            imageWidth,
+            imageHeight
+        );
+        // Second layer
+        ctx.drawImage(
+            image,
+            indentsAndSize["indentXSecondLayer"],
+            indentsAndSize["SecondLayer"],
+            indentsAndSize["SecondLayer"],
+            indentsAndSize["SecondLayer"],
+            0,
+            0,
+            canvasWidth,
+            canvasHeight
+        );
     };
-
-    if (skinWidth === 128) {
-        for (let key in indentsAndSize) {
-            indentsAndSize[key] *= 2;
-        }
-    } else if (skinWidth === 256) {
-        for (let key in indentsAndSize) {
-            indentsAndSize[key] *= 4;
-        }
-    } else if (skinWidth === 512) {
-        for (let key in indentsAndSize) {
-            indentsAndSize[key] *= 8;
-        }
-    }
-    // First layer
-    ctx.drawImage(
-        image,
-        indentsAndSize["FirstLayer"],
-        indentsAndSize["FirstLayer"],
-        indentsAndSize["FirstLayer"],
-        indentsAndSize["FirstLayer"],
-        canvasDX,
-        canvasDY,
-        imageWidth,
-        imageHeight
-    );
-    // Second layer
-    ctx.drawImage(
-        image,
-        indentsAndSize["indentXSecondLayer"],
-        indentsAndSize["SecondLayer"],
-        indentsAndSize["SecondLayer"],
-        indentsAndSize["SecondLayer"],
-        0,
-        0,
-        canvasWidth,
-        canvasHeight
-    );
-};
+});
