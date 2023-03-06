@@ -22,7 +22,7 @@ canvasElements.forEach((canvas) => {
     const ctx = canvas.getContext("2d");
 
     const image = new Image();
-    image.src = "img/128x128.png";
+    image.src = "skins/128x128.png";
 
     image.onload = function () {
         const skinWidth = this.width;
