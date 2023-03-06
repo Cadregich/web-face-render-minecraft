@@ -17,10 +17,7 @@ function removeBlurFromCanvas(canvas, ctx) {
     canvas.style.msInterpolationMode = "nearest-neighbor";
 }
 
-const canvasElements = document.querySelectorAll(".skinHead");
-canvasElements.forEach((canvas) => {
-    const ctx = canvas.getContext("2d");
-
+function faceRender(ctx, canvas) {
     const image = new Image();
     image.src = "skins/128x128.png";
 
@@ -34,19 +31,17 @@ canvasElements.forEach((canvas) => {
             return;
         }
 
-        removeBlurFromCanvas(canvas, ctx);
-
         const canvasWidth = canvas.width;
         const canvasHeight = canvas.height;
 
-        if (canvasWidth < 64|| canvasHeight < 64) {
+        if (canvasWidth < 64 || canvasHeight < 64) {
             console.warn('Face Render: Low canvas size');
         }
-        
+
         if (canvasWidth !== canvasHeight) {
             console.warn('Face Render: The width of the canvas is not equal to its height');
         }
-        
+
         const imageWidth = canvasWidth - (canvasWidth * (8 / 100));    // To reduce the first layer so that the second is in front
         const imageHeight = canvasHeight - (canvasHeight * (8 / 100)); // To reduce the first layer so that the second is in front
         const canvasDX = (canvasWidth - imageWidth) / 2;   // To center the first layer
@@ -95,5 +90,40 @@ canvasElements.forEach((canvas) => {
             canvasWidth,
             canvasHeight
         );
-    };
-});
+    }
+}
+
+function capeRender(ctx, canvas) {
+    const image = new Image();
+    image.src = "skins/cape.png";
+    image.onload = function () {
+        // Cape
+        ctx.drawImage(
+            image,
+            0,
+            5,
+            12,
+            8,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+    }
+}
+
+function initialize() {
+    const canvasElements = document.querySelectorAll(".skinHead");
+
+    canvasElements.forEach((canvas) => {
+        const imageType = canvas.getAttribute('type');
+        const ctx = canvas.getContext("2d");
+        removeBlurFromCanvas(canvas, ctx);
+        if (imageType !== 'cape') {
+            faceRender(ctx, canvas);
+        } else {
+            capeRender(ctx, canvas);
+        }
+    });
+}
+initialize();
