@@ -43,7 +43,7 @@ canvasElements.forEach((canvas) => {
             console.warn('Face Render: Low canvas size');
         }
         
-        if (canvasWidth === canvasHeight) {
+        if (canvasWidth !== canvasHeight) {
             console.warn('Face Render: The width of the canvas is not equal to its height');
         }
         
