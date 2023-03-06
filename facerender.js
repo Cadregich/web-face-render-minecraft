@@ -95,15 +95,46 @@ function faceRender(ctx, canvas) {
 
 function capeRender(ctx, canvas) {
     const image = new Image();
-    image.src = "skins/cape.png";
+    image.src = "skins/hd_cape.png";
     image.onload = function () {
+        const capeWidth = this.width;
+        const capeHeight = this.height;
+
+        if ((capeWidth !== 64 && capeWidth !== 128 && capeWidth !== 256 && capeWidth !== 512 && capeWidth !== 1024) ||
+            (capeHeight !== 64 && capeHeight !== 128 && capeHeight !== 256 && capeHeight !== 512 && capeHeight !== 1024)) {
+            console.error('Face Render: Invalid skin size');
+        }
+
+        const croppedArea = {
+            width: 12,
+            height: 8,
+        };
+
+        if (capeWidth === 128) {
+            for (let key in croppedArea) {
+                croppedArea[key] *= 2;
+            }
+        } else if (capeWidth === 256) {
+            for (let key in croppedArea) {
+                croppedArea[key] *= 4;
+            }
+        } else if (capeWidth === 512) {
+            for (let key in croppedArea) {
+                croppedArea[key] *= 8;
+            }
+        } else if (capeWidth === 1024) {
+            for (let key in croppedArea) {
+                croppedArea[key] *= 16;
+            }
+        }
+
         // Cape
         ctx.drawImage(
             image,
             0,
             5,
-            12,
-            8,
+            croppedArea['width'],
+            croppedArea['height'],
             0,
             0,
             canvas.width,
