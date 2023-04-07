@@ -25,7 +25,7 @@ function faceRender(ctx, canvas) {
         const skinWidth = this.width;
         const skinHeight = this.height;
 
-        if ((skinHeight !== 64 && skinHeight !== 128 && skinHeight !== 256 && skinHeight !== 512) ||
+        if ((skinHeight !== 32 && skinHeight !== 64 && skinHeight !== 128 && skinHeight !== 256 && skinHeight !== 512) ||
             (skinWidth !== 64 && skinWidth !== 128 && skinWidth !== 256 && skinWidth !== 512)) {
             console.error('Face Render: Invalid skin size');
             return;
