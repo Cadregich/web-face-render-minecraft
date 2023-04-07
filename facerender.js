@@ -101,8 +101,8 @@ function capeRender(ctx, canvas) {
         const capeHeight = this.height;
 
         if ((capeWidth !== 64 && capeWidth !== 128 && capeWidth !== 256 && capeWidth !== 512 && capeWidth !== 1024) ||
-            (capeHeight !== 64 && capeHeight !== 128 && capeHeight !== 256 && capeHeight !== 512 && capeHeight !== 1024)) {
-            console.error('Face Render: Invalid skin size');
+            (capeHeight !== 32 && capeHeight !== 64 && capeHeight !== 128 && capeHeight !== 256 && capeHeight !== 512 && capeHeight !== 1024)) {
+            console.error('Face Render: Invalid cape size');
         }
 
         const croppedArea = {
