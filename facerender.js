@@ -19,7 +19,7 @@ function removeBlurFromCanvas(canvas, ctx) {
 
 function faceRender(ctx, canvas) {
     const image = new Image();
-    image.src = "skins/128x128.png";
+    image.src = "skins/128x128.png?t=" + new Date().getTime();
 
     image.onload = function () {
         const skinWidth = this.width;
@@ -95,7 +95,7 @@ function faceRender(ctx, canvas) {
 
 function capeRender(ctx, canvas) {
     const image = new Image();
-    image.src = "skins/hd_cape.png";
+    image.src = "skins/hd_cape.png?t=" + new Date().getTime();
     image.onload = function () {
         const capeWidth = this.width;
         const capeHeight = this.height;
@@ -150,6 +150,7 @@ function initialize() {
         const imageType = canvas.getAttribute('type');
         const ctx = canvas.getContext("2d");
         removeBlurFromCanvas(canvas, ctx);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (imageType !== 'cape') {
             faceRender(ctx, canvas);
         } else {
